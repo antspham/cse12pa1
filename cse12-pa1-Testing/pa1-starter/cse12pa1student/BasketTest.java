@@ -45,7 +45,7 @@ public class BasketTest {
 		return null;
 	}
 	
-	@Test
+	@Test 
 	public void addedHasCount1() {
 		Basket basketToTest = makeBasket();
 
@@ -55,18 +55,37 @@ public class BasketTest {
 	}
 
 	@Test 
-	public void removeAllHasCount0{
+	public void countTest() {
 		Basket basketToTest = makeBasket();
-		
+
+		Item i = new Item("Shampoo", 5);
+		basketToTest.addToBasket(i);
+		i = new Item("Soap", 3);
+		basketToTest.addToBasket(i);
+		assertEquals(2, basketToTest.count());
+	}
+
+	@Test 
+	public void countItemTest() {
+		Basket basketToTest = makeBasket();
+
 		Item i = new Item("Shampoo", 5);
 		basketToTest.addToBasket(i);
 		basketToTest.addToBasket(i);
-		basketToTest.removeAllFromBasket(i);
-		assertEquals(0, basketToTest.count());
+		assertEquals(2, basketToTest.countItem(i));
 	}
 
 	@Test
-	public void removeOneItem {
+	public void totalCostTest() {
+		Basket basketToTest = makeBasket();
+
+		Item i = new Item("Shampoo", 5);
+		basketToTest.addToBasket(i);
+		assertEquals(5, basketToTest.totalCost());
+	}
+
+	@Test
+	public void removeFromBasketTest() {
 		Basket basketToTest = makeBasket();
 		
 		Item i = new Item("Soap", 3);
@@ -78,21 +97,45 @@ public class BasketTest {
 	}
 
 	@Test
-	public void removeItemNotInBasket {
+	public void removeAllFromBasketTest() {
+		Basket basketToTest = makeBasket();
+		
+		Item i = new Item("Soap", 3);
+		basketToTest.addToBasket(i);
+		i = new Item("Shampoo", 5);
+		basketToTest.addToBasket(i);
+		basketToTest.addToBasket(i);
+		basketToTest.removeAllFromBasket(i);
+		assertEquals(1, basketToTest.count());
+	}
+
+	@Test 
+	public void emptyTest() {
+		Basket basketToTest = makeBasket();
+		
+		Item i = new Item("Shampoo", 5);
+		basketToTest.addToBasket(i);
+		basketToTest.addToBasket(i);
+		basketToTest.empty();
+		assertEquals(0, basketToTest.count());
+	}
+
+	@Test // Removes item not in basket, edge case
+	public void removeItemNotInBasket() {
 		Basket basketToTest = makeBasket();
 
 		Item i = new Item("Shampoo", 5);
 		basketToTest.addToBasket(i);
-		Item a = new Item("Soap", 3)
+		Item a = new Item("Soap", 3);
 		assertEquals(false, basketToTest.removeFromBasket(a));
 	}
 
-	@Test
-	public void largeBasket {
+	@Test // Checks overflow, edge case
+	public void largeBasket() {
 		Basket basketToTest = makeBasket();
 
 		Item i = new Item("Shampoo", 5);
-		for (int i = 0; i < 99; i++) {
+		for (int x = 0; x < 99; x++) {
 			basketToTest.addToBasket(i);
 		}
 		assertEquals(99, basketToTest.count());
